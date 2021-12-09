@@ -8,14 +8,17 @@
 */
 void add_node(stack_t **head, unsigned int line_number)
 {
+	int sum = 0;
+
 	if (head == NULL || *head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't add, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	(*head)->next->n += (*head)->n;
-	*head = (*head)->next;
+	(*head) = (*head)->next;
+	sum = (*head)->n + (*head)->prev->n;
+	(*head)->n = sum;
 	free((*head)->prev);
 	(*head)->prev = NULL;
 }
@@ -28,14 +31,17 @@ void add_node(stack_t **head, unsigned int line_number)
 */
 void sub_node(stack_t **head, unsigned int line_number)
 {
+	int sub = 0;
+
 	if (head == NULL || *head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't sub, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	(*head)->next->n -= (*head)->n;
-	*head = (*head)->next;
+	(*head) = (*head)->next;
+	sub = (*head)->n - (*head)->prev->n;
+	(*head)->n = sub;
 	free((*head)->prev);
 	(*head)->prev = NULL;
 }
@@ -50,6 +56,8 @@ void sub_node(stack_t **head, unsigned int line_number)
 
 void div_node(stack_t **head, unsigned int line_number)
 {
+	int div = 0;
+
 	if (head == NULL || *head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't div, stack too short\n", line_number);
@@ -58,8 +66,9 @@ void div_node(stack_t **head, unsigned int line_number)
 
 	if ((*head)->n != 0)
 	{
-		(*head)->next->n /= (*head)->n;
-		*head = (*head)->next;
+		(*head) = (*head)->next;
+		div = (*head)->n / (*head)->prev->n;
+		(*head)->n = div;
 		free((*head)->prev);
 		(*head)->prev = NULL;
 	}
@@ -80,14 +89,17 @@ void div_node(stack_t **head, unsigned int line_number)
 
 void mul_node(stack_t **head, unsigned int line_number)
 {
+	int mul;
+
 	if (head == NULL || *head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't mul, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	(*head)->next->n *= (*head)->n;
-	*head = (*head)->next;
+	(*head) = (*head)->next;
+	mul = (*head)->n * (*head)->prev->n;
+	(*head)->n = mul;
 	free((*head)->prev);
 	(*head)->prev = NULL;
 }
@@ -101,6 +113,8 @@ void mul_node(stack_t **head, unsigned int line_number)
 */
 void mod_node(stack_t **head, unsigned int line_number)
 {
+	int mod;
+
 	if (head == NULL || *head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't mod, stack too short\n", line_number);
@@ -109,8 +123,9 @@ void mod_node(stack_t **head, unsigned int line_number)
 
 	if ((*head)->n != 0)
 	{
-		(*head)->next->n  %= (*head)->n;
-		*head = (*head)->next;
+		(*head) = (*head)->next;
+		mod = (*head)->n % (*head)->prev->n;
+		(*head)->n = mod;
 		free((*head)->prev);
 		(*head)->prev = NULL;
 	}

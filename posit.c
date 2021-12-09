@@ -8,16 +8,22 @@
 */
 void swap(stack_t **head, unsigned int line_number)
 {
-	int n = (*head)->n;
+	stack_t *temp = (*head)->next;
 
 	if (head == NULL || *head == NULL || !((*head)->next))
 	{
-		fprintf(stderr, "L%u: can't swap, stack too short\n", line_number);
+		fprintf(stderr, "L%u: can't swap, stack too short\n",
+				line_number);
 		exit(EXIT_FAILURE);
 	}
 
-	(*head)->n = (*head)->next->n;
-	(*head)->next->n = n;
+	(*head)->next = temp->next;
+	if (temp->next != NULL)
+		temp->next->prev = *head;
+	temp->next = *head;
+	(*head)->prev = temp;
+	temp->prev = NULL;
+	*head = temp;
 }
 
 /**
@@ -30,24 +36,21 @@ void swap(stack_t **head, unsigned int line_number)
 */
 void rotl(stack_t **head, unsigned int line_number)
 {
-	stack_t *top = *head, *ptr;
-	stack_t *second = top->next;
+	stack_t *temp = *head;
 
 	(void) line_number;
 
 	if (head == NULL || *head == NULL)
 		return;
-
-	while ((*head)->next)
-		*head = (*head)->next;
-	ptr = (*head)->next;
-	ptr = top;
-	ptr->prev = *head;
-	ptr->next = NULL;
-
-	*head = second;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = *head;
+	(*head)->prev = temp;
+	*head = (*head)->next;
+	(*head)->prev->next = NULL;
 	(*head)->prev = NULL;
 }
+
 /**
 * rotr - function rotates the stack to the bottom
 * @head: pointer to the start of the stack
@@ -56,20 +59,19 @@ void rotl(stack_t **head, unsigned int line_number)
 */
 void rotr(stack_t **head, unsigned int line_number)
 {
-	stack_t *ptr = *head, *temp;
+	stack_t *ptr = *head;
+
+	if (head == NULL || *head == NULL || (*head)->next == NULL)
+		return;
 
 	(void) line_number;
 
-	if (head == NULL || *head == NULL)
-		return;
+	while (ptr->next)
+		ptr = ptr->next;
+	ptr->next = *head;
+	ptr->prev->next = NULL;
+	ptr->prev = NULL;
+	(*head)->prev = ptr;
+	(*head) = ptr;
 
-	while (ptr)
-	{
-		temp = ptr->prev;
-		ptr->prev = ptr->next;
-		ptr->next = temp;
-		ptr = ptr->prev;
-	}
-	if (temp)
-		*head = temp->prev;
 }

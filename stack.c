@@ -2,7 +2,7 @@
 
 /**
 * is_digit - function checks for an integer in  a string
-* @n: string to be checked
+* @str: string to be checked
 * Return: 1 on sucess, 0 on failure
 */
 int is_digit(char *str)
@@ -32,7 +32,7 @@ int is_num(char *str)
 	if (!str)
 		return (0);
 	for (i = 0; str[i] != '\0'; i++)
-		if (i < '0'|| i > '9')
+		if (i < '0' || i > '9')
 			return (0);
 	return (1);
 }
@@ -42,10 +42,9 @@ int is_num(char *str)
 * push - adds a node to the stack
 * @head: A pointer to a pointer to the top stack
 * @line_number: number of lines
-* @n: item to be added
 * Return: void
 */
-void push (stack_t **head, unsigned int line_number)
+void push(stack_t **head, unsigned int line_number)
 {
 	char *n = global.arg;
 

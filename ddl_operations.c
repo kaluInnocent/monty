@@ -29,8 +29,7 @@ stack_t *queue(stack_t **head, int n)
 		ptr = ptr->next;
 	ptr->next = new;
 	new->prev = ptr;
-	
-	return (*head);
+	return (new);
 }
 
 /**
@@ -41,7 +40,7 @@ stack_t *queue(stack_t **head, int n)
 */
 stack_t *add_end_node(stack_t **head, int n)
 {
-	stack_t *new = make_node(n);
+	stack_t *new = malloc(sizeof(stack_t));
 
 	if (new == NULL)
 	{
@@ -49,15 +48,20 @@ stack_t *add_end_node(stack_t **head, int n)
 		free(new);
 		return (NULL);
 	}
-	if (!*head)
-		*head = new;
-	else
+	new->n = n;
+	new->next = NULL;
+	new->prev = NULL;
+
+	if (*head == NULL)
 	{
-		(*head)->prev = new;
-		new->next = *head;
 		*head = new;
+		return (new);
 	}
-	return (*head);
+
+	(*head)->prev = new;
+	new->next = *head;
+	*head = new;
+	return (new);
 }
 
 /**
